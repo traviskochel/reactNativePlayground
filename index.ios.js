@@ -18,6 +18,7 @@ var {
   ListView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } = React;
 
@@ -45,6 +46,18 @@ var reactNativePlayground = React.createClass({
   componentDidMount: function() {
     this.fetchData();
   },
+  updateTitle: function(event) {
+    this.setState({
+      title: 'ddddd'
+    });
+  },
+  curTitle: function(movie){
+    var title = this.props.title;
+    if (title == '') {
+      title = movie.title
+    }
+    return title;
+  },
   render: function() {
     if (!this.state.loaded) {
       return this.renderLoadingView();
@@ -71,19 +84,43 @@ var reactNativePlayground = React.createClass({
 
   renderMovie: function(movie) {
     return (
-      <View style={styles.container}>
-        <Image
-          source={{uri: movie.posters.thumbnail}}
-          style={styles.thumbnail}
-        />
-        <View style={styles.rightContainer}>
-          <Text style={styles.title}>{movie.title}</Text>
-          <Text style={styles.year}>{movie.year}</Text>
-        </View>
-      </View>
+      <MovieRow movie={movie} key={movie.title} />
     );
   },
 
+});
+
+var MovieRow = React.createClass({
+   getInitialState: function() {
+    return {
+      title: ''
+    };
+  },
+  updateTitle: function(text){
+    this.setState({title: text});
+  },
+  curTitle: function(){
+    var title = this.state.title;
+    if (title == '' ) {
+      title = this.props.movie.title;
+    }
+    return title;
+  },
+  render: function(){
+    return (
+      <View style={styles.container}>
+        <Image
+          source={{uri: this.props.movie.posters.thumbnail}}
+          style={styles.thumbnail}
+        />
+        <View style={styles.rightContainer}>
+          <Text style={styles.title}>{this.curTitle()}</Text>
+          <Text style={styles.year}>{this.props.movie.year}</Text>
+          <TextInput style={styles.textInput} onChangeText={this.updateTitle} />
+        </View>
+      </View>
+    );
+  }
 });
 
 var styles = StyleSheet.create({
@@ -92,7 +129,9 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#EEE',
+    borderBottomWidth: 1,
+    borderColor: '#DDD'
   },
   rightContainer: {
     flex: 1,
@@ -106,15 +145,26 @@ var styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    marginBottom: 8,
+    marginBottom: 3,
     textAlign: 'left',
+    fontWeight: 'bold',
   },
   year: {
     textAlign: 'left',
+
   },
   listView: {
     paddingTop: 20,
     backgroundColor: '#F5FCFF',
+  },
+  textInput: {
+    height: 30,
+    fontSize: 14,
+    paddingLeft: 10,
+    paddingRight: 10, 
+    borderColor: '#ccc', 
+    backgroundColor: "#ddd",
+    borderWidth: 1,
   },
 });
 
