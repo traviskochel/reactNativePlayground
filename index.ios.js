@@ -20,6 +20,8 @@ var {
   Text,
   TextInput,
   View,
+  TouchableHighlight,
+  AlertIOS,
 } = React;
 
 
@@ -106,6 +108,8 @@ var MovieRow = React.createClass({
     }
     return title;
   },
+  handleButtonPress: function(){
+  },
   render: function(){
     return (
       <View style={styles.container}>
@@ -117,6 +121,17 @@ var MovieRow = React.createClass({
           <Text style={styles.title}>{this.curTitle()}</Text>
           <Text style={styles.year}>{this.props.movie.year}</Text>
           <TextInput style={styles.textInput} onChangeText={this.updateTitle} />
+
+          <TouchableHighlight style={styles.button} underlayColor="#008" onPress={() => AlertIOS.alert(
+            'Foo Title',
+            'My Alert Msg',
+            [
+              {text: 'Foo', onPress: () => console.log('Foo Pressed!')},
+              {text: 'Bar', onPress: () => console.log('Bar Pressed!')},
+            ]
+            )}>
+            <Text style={styles.buttonText} >TOUCH ME</Text>
+          </TouchableHighlight>
         </View>
       </View>
     );
@@ -166,6 +181,22 @@ var styles = StyleSheet.create({
     backgroundColor: "#ddd",
     borderWidth: 1,
   },
+  button: {
+    height: 30,
+    marginTop: 5,
+    paddingTop: 7,
+    paddingLeft: 10,
+    paddingRight: 10,
+    backgroundColor: "#00f",
+    color: "#fff",
+    borderRadius: 3,
+  },
+  buttonText: {
+    textAlign: 'center',
+    color: "#FFF",
+    fontSize: 12,
+    fontWeight: 'bold',
+  }
 });
 
 AppRegistry.registerComponent('reactNativePlayground', () => reactNativePlayground);
